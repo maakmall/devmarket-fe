@@ -14,6 +14,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export function RegisterForm({ className, ...props }) {
   const [form, setForm] = useState({
@@ -24,6 +25,7 @@ export function RegisterForm({ className, ...props }) {
   });
   const [errors, setErrors] = useState({});
   const [message, setMessage] = useState("");
+  const router = useRouter();
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.id]: e.target.value });
@@ -40,6 +42,7 @@ export function RegisterForm({ className, ...props }) {
       const res = await api.post("/users/signup", form);
       setMessage(res.data.message);
       setForm({ name: "", email: "", password: "", password_confirmation: "" });
+      router.push("/login");
     } catch (err) {
       if (err.response?.data?.errors) {
         setErrors(err.response.data.errors);
